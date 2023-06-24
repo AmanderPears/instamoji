@@ -14,6 +14,7 @@ list2['lazy'] = '🦥'
 list2['dog'] = '🐶'
 list2['cat'] = '🐈'
 list2['time'] = '⏲'
+list2['test'] = '\U0001F1E8\U0001F1E6'
 
 def setupNormalEmoji():
     for k,v in list2.items():
