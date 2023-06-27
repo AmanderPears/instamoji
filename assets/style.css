@@ -4,6 +4,7 @@ body {
 }
 
 img {
-    width: 128px;
-    height: 128px;
+    margin: 15px;
+    width: 32px;
+    height: 32px;
 }

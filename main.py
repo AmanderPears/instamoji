@@ -1,74 +1,38 @@
 import webview
 import keyboard
 import time
+import pyautogui
 
 window = None
+
+def moveWindow(win):
+    x, y = pyautogui.position()
+    win.move(x, y)
+
+
 
 class API:
     def testFunc1(self, link):
         print(f'{link}')
         window.hide()
-        time.sleep(0.5)
-        keyboard.write(link, 0.2)
+        time.sleep(0.3)
+        keyboard.write(link)
         
 
 
-# def test_js(window):
-#     window.evaluate_js(
-#         r"""
-# function waitForElm(selector) {
-#     return new Promise(resolve => {
-#         if (document.querySelector(selector)) {
-#             return resolve(document.querySelector(selector));
-#         }
-
-#         const observer = new MutationObserver(mutations => {
-#             if (document.querySelector(selector)) {
-#                 resolve(document.querySelector(selector));
-#                 observer.disconnect();
-#             }
-#         });
-
-#         observer.observe(document.body, {
-#             childList: true,
-#             subtree: true
-#         });
-#     });
-# };
-    
-# waitForElm('a.thumbnail').then(a => {
-
-#     console.log('ru');
-#     window.pywebview.api.testFunc1("asd").then(r => console.log('asd' + r));
-
-#     window.addEventListener('click', function(event) {
-#         event.preventDefault();
-#         event.stopPropagation();
-#         window.pywebview.api.testFunc1(event.target?.src);
-#     });
-
-#     document.querySelectorAll('a.thumbnail').forEach(anchor => {
-#         anchor.removeChild(anchor.querySelector('.caption'));
-#     });
-# });
-
-#         """
-#     )
-
-# url = 'https://7tv.app/emotes?page=1'
-# url = 'https://www.frankerfacez.com/emoticons/wall?q=&sort=count-desc&days=0'
-url = 'index.html'
+url = './assets/index.html'
 api = API()
 
 window = webview.create_window(
     'Test', 
     url, 
-    width=399, 
+    width=410, 
     height=394, 
     js_api=api,
     frameless=True,
     resizable=False,
-    # hidden=True
+    # hidden=True,
+    on_top=True
     )
 
 hidden = False
@@ -76,18 +40,14 @@ hidden = False
 def toggle():
     global hidden
     if hidden:
+        moveWindow(window)
         window.show()
         hidden = False
     else:
         window.hide()
         hidden = True
 
-keyboard.add_hotkey('alt+space', toggle)
+keyboard.add_hotkey('ctrl+space', toggle)
 
 
 webview.start()
-# webview.start(
-#     # test_js, 
-#     window,
-#     # debug=True
-#     )

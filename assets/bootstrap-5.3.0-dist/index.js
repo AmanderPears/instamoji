@@ -25,12 +25,14 @@ function render(jsonData) {
     let parent = document.querySelector('#main');
     jsonData?.data?.emotes?.items?.forEach(i => {
         let url = `https://cdn.7tv.app/emote/${i.id}/4x.webp`;
+        // let url = `https://cdn.7tv.app/emote/${i.id}/4x.gif`;
 
         let img = document.createElement('img');
         img.src = url;
         img.alt = i.name;
         img.title = i.name;
         img.addEventListener('click', e => {
+            // window?.pywebview?.api.testFunc1(url.replace('webp', 'gif'));
             window?.pywebview?.api.testFunc1(url);
         });
 
