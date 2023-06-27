@@ -18,7 +18,7 @@ class API:
         window.hide()
         window.hidden = True
 
-        time.sleep(0.3)
+        time.sleep(0.1)
         keyboard.write(link)
         
 
