@@ -14,7 +14,10 @@ def moveWindow(win):
 class API:
     def testFunc1(self, link):
         print(f'{link}')
+        
         window.hide()
+        window.hidden = True
+
         time.sleep(0.3)
         keyboard.write(link)
         
@@ -31,23 +34,20 @@ window = webview.create_window(
     js_api=api,
     frameless=True,
     resizable=False,
-    # hidden=True,
+    hidden=True,
     on_top=True
     )
 
-hidden = False
-
-def toggle():
-    global hidden
-    if hidden:
+def toggleWindowVisibility():
+    if window.hidden:
         moveWindow(window)
         window.show()
-        hidden = False
     else:
         window.hide()
-        hidden = True
 
-keyboard.add_hotkey('ctrl+space', toggle)
+    window.hidden = not window.hidden
+
+keyboard.add_hotkey('ctrl+space', toggleWindowVisibility)
 
 
 webview.start()
