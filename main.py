@@ -50,4 +50,6 @@ def toggleWindowVisibility():
 keyboard.add_hotkey('ctrl+space', toggleWindowVisibility)
 
 
-webview.start()
+webview.start(
+    # debug=True
+    )

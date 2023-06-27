@@ -11,24 +11,23 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" data-bs-toggle="modal" data-bs-target="#exampleModal" id="navSearch">
     </div>
   </nav>
 
   <div id="main"></div>
 
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1> -->
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="modalSearch">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          ...
+        <div class="modal-body" id="modalMain">
         </div>
         <!-- <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
