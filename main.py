@@ -2,12 +2,17 @@ import webview
 import keyboard
 import time
 import pyautogui
+import ctypes
 
 window = None
 
 def moveWindow(win):
     x, y = pyautogui.position()
-    win.move(x, y)
+
+    #https://stackoverflow.com/a/59628224
+    scaleFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
+
+    win.move(x/scaleFactor, y/scaleFactor)
 
 
 
