@@ -34,8 +34,8 @@ api = API()
 window = webview.create_window(
     'Test', 
     url, 
-    width=400, 
-    height=400, 
+    width=500, 
+    height=500, 
     js_api=api,
     frameless=True,
     resizable=False,

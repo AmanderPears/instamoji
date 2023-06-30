@@ -21,8 +21,21 @@ function waitForElm(selector) {
 }
 
 
+// //function only executes once
+// (function(callback) {
+//     let once = false;
+//     return function() {
+//         if (!once) {
+//             executed = true;
+//             callback();
+//         }
+//     }
+// })();
+
 function render(jsonData, parentID) {
     let parent = document.querySelector(parentID);
+    let recent = document.querySelector('#recent');
+
     jsonData?.data?.emotes?.items?.forEach(i => {
         let url = `https://cdn.7tv.app/emote/${i.id}/4x.webp`;
 
@@ -30,12 +43,32 @@ function render(jsonData, parentID) {
         img.src = url;
         img.alt = i.name;
         img.title = i.name;
-        img.addEventListener('click', e => {
-            window?.pywebview?.api.testFunc1(url);
-        });
+        img.dataset.id = i.id;
+        img.dataset.jsonData = JSON.stringify(i);
+        // i`mg.addEventListener('click', e => {
+        //     window?.pywebview?.api.testFunc1(url);
+
+        //     //add to recent tab on click
+        //     //if the element is already in the tab, prepend it
+        //     addToTab(recent, img);
+        // });`
 
         parent.append(img);
     });
+}
+
+function addToTab(parent, img) {
+    let existingEle = parent.querySelector(`[data-id="${img.dataset.id}"]`);
+    if (existingEle === null) {
+        let clone = img.cloneNode(true);
+        clone.addEventListener('click', e => {
+            window?.pywebview?.api.testFunc1(url);
+            // addToTab(document.querySelector('#recent'), clone);
+        });
+        parent.prepend(clone);
+    } else {
+        parent.prepend(existingEle);
+    }
 }
 
 
@@ -93,7 +126,7 @@ waitForElm('#modalSearch').then(input => {
 });
 
 
-function search(str, page=1) {
+function search(str, page = 1) {
     return fetch("https://7tv.io/v3/gql", {
         "headers": {
             "content-type": "application/json",
@@ -108,11 +141,11 @@ function search(str, page=1) {
 
 
 //nav search
-waitForElm("#navSearch").then(input => {
-    input.addEventListener('focus', () => {
-        input.blur();
-    });
-});
+// waitForElm("#navSearch").then(input => {
+//     input.addEventListener('focus', () => {
+//         input.blur();
+//     });
+// });
 
 
 
@@ -122,4 +155,55 @@ waitForElm("#modalMain").then(element => {
             search(element.dataset.value, ++element.dataset.page);
         }
     };
+});
+
+
+//tabs
+waitForElm('#tabs').then(tabs => {
+    tabs.addEventListener('click', e => {
+
+        let previous = document.querySelector('.nav-link.active');
+        previous.classList.toggle('active');
+        document.querySelector(`#${previous.dataset.tab}`).classList.toggle('tab-hide');
+
+        e.target.classList.toggle('active');
+        document.querySelector(`#${e.target.dataset.tab}`).classList.toggle('tab-hide');
+
+    });
+});
+
+//context menu
+waitForElm('#cmenu').then(cmenu => {
+
+    window.addEventListener('contextmenu', e => {
+        if (e.target?.dataset?.id && e.target?.parentElement?.id !== 'fav') {
+            cmenu.firstElementChild.textContent = e.target.title;
+            cmenu.style.top = `${e.clientY}px`;
+            cmenu.style.left = `${e.clientX}px`;
+            cmenu.classList.remove('tab-hide');
+
+            cmenu.querySelector('#cmenuFav').onclick = () => {
+                addToTab(document.querySelector('#fav'), e.target);
+            };
+
+            cmenu.focus();
+            e.preventDefault();
+        }
+    });
+
+    window.addEventListener('click', e => {
+        if (e.target.id != 'cmenu') {
+            cmenu.classList.add('tab-hide');
+        }
+
+        if (e.target?.dataset?.id) {
+            console.log(e.target);
+            window?.pywebview?.api.testFunc1(e.target.src);
+
+            //add to recent tab on click
+            //if the element is already in the tab, prepend it
+            addToTab(document.querySelector('#recent'), e.target);
+
+        }
+    });
 });

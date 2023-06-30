@@ -12,13 +12,41 @@
 
 <body>
   <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+
     <div class="container-fluid">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" data-bs-toggle="modal" data-bs-target="#exampleModal" id="navSearch">
+      <ul class="nav nav-pills" id="tabs">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page"  data-tab="main" href="#">Top</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-tab="recent">History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-tab="fav">⭐</a>
+        </li>
+      </ul>
+
+
+
+      <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#exampleModal" >🔎</button>
     </div>
+
+    <!-- <div class="container-fluid">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" data-bs-toggle="modal" data-bs-target="#exampleModal" id="navSearch">
+    </div> -->
   </nav>
 
-  <div id="main"></div>
+  <!-- context menu -->
+  <div id="cmenu" class="list-group tab-hide">
+    <a id="cmenuName" class="list-group-item list-group-item-action disabled">NAME</a>
+    <a id="cmenuFav" class="list-group-item list-group-item-action">Add to ⭐</a>
+  </div>
 
+  <div id="main"></div>
+  <div id="recent" class="tab-hide"></div>
+  <div id="fav" class="tab-hide"></div>
+
+  <!-- search modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
@@ -38,7 +66,9 @@
   </div>
 
 
+
   <script src="./bootstrap-5.3.0-dist/js/bootstrap.min.js"></script>
+  <script src="./popper.min.js"></script>
   <script src="index.js"></script>
 </body>
 

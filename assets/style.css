@@ -1,6 +1,7 @@
 body {
     margin: 0;
     background-color: black;
+    overflow-y: scroll;
 }
 
 img {
@@ -8,3 +9,13 @@ img {
     width: 32px;
     height: 32px;
 }
+
+.tab-hide {
+    display: none;
+}
+
+#cmenu {
+    max-width: 150px;
+    position: absolute;
+    z-index: 9999;
+} 
