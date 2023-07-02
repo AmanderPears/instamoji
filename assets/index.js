@@ -69,6 +69,8 @@ function addToTab(parent, img) {
     } else {
         parent.prepend(existingEle);
     }
+
+    save();
 }
 
 
@@ -197,7 +199,7 @@ waitForElm('#cmenu').then(cmenu => {
         }
 
         if (e.target?.dataset?.id) {
-            console.log(e.target);
+            // console.log(e.target);
             window?.pywebview?.api.testFunc1(e.target.src);
 
             //add to recent tab on click
@@ -207,3 +209,59 @@ waitForElm('#cmenu').then(cmenu => {
         }
     });
 });
+
+waitForElm('#recent').then(recentElement => {
+    load();
+});
+
+
+function save() {
+    let recent = [...document.querySelectorAll('#recent img')].map(e => JSON.parse(e.dataset.jsonData));
+
+    let fav = [...document.querySelectorAll('#fav img')].map(e => JSON.parse(e.dataset.jsonData));
+
+    let recentJson = JSON.stringify(recent);
+    let favJson = JSON.stringify(fav);
+
+    localStorage.setItem('recent', recentJson);
+    localStorage.setItem('fav', favJson);
+    window?.pywebview?.api.saveJson('recent', recentJson);
+    window?.pywebview?.api.saveJson('fav', favJson);
+}
+
+function load() {
+    let recentData = localStorage.getItem('recent');
+    console.log(recentData);
+    if (recentData != null) {
+        let recentElement = document.querySelector('#recent');
+        let recent = JSON.parse(recentData);
+        recent.forEach(i => {
+
+            let url = `https://cdn.7tv.app/emote/${i.id}/4x.webp`;
+            let img = document.createElement('img');
+            img.src = url;
+            img.alt = i.name;
+            img.title = i.name;
+            img.dataset.id = i.id;
+            img.dataset.jsonData = JSON.stringify(i);
+            recentElement.append(img);
+        });
+    }
+
+    let favData = localStorage.getItem('fav');
+    if (favData != null) {
+        let favElement = document.querySelector('#fav');
+        let fav = JSON.parse(favData);
+        fav.forEach(i => {
+
+            let url = `https://cdn.7tv.app/emote/${i.id}/4x.webp`;
+            let img = document.createElement('img');
+            img.src = url;
+            img.alt = i.name;
+            img.title = i.name;
+            img.dataset.id = i.id;
+            img.dataset.jsonData = JSON.stringify(i);
+            favElement.append(img);
+        });
+    }
+}

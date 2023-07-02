@@ -3,8 +3,16 @@ import keyboard
 import time
 import pyautogui
 import ctypes
+import json
 
 window = None
+rdata = None
+jdata = None
+
+with open('recent.json') as f:
+    rdata = f.read()
+with open('fav.json') as f:
+    fdata = f.read()
 
 def moveWindow(win):
     x, y = pyautogui.position()
@@ -13,6 +21,14 @@ def moveWindow(win):
     scaleFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
 
     win.move(x/scaleFactor, y/scaleFactor)
+
+def evaluate_js(win):
+    win.evaluate_js(
+        f"""
+        localStorage.setItem('recent', {rdata});
+        localStorage.setItem('fav', {fdata});
+        """
+    )
 
 
 
@@ -25,6 +41,24 @@ class API:
 
         time.sleep(0.1)
         keyboard.write(link)
+
+    # def on_closed():
+    #     print('done')
+
+    # def on_loaded(t):
+    #     with open('recent.json') as f:
+    #         rdata = f.read()
+    #     with open('fav.json') as f:
+    #         fdata = f.read()
+
+    #     return [rdata, fdata] 
+        
+
+    def saveJson(self, filename, data):
+        with open(f'{filename}.json', 'w') as f:
+            json.dump(data, f, indent=2)
+
+    
         
 
 
@@ -43,6 +77,9 @@ window = webview.create_window(
     on_top=True
     )
 
+# window.events.closed += api.on_closed
+# window.events.loaded += api.on_loaded
+
 def toggleWindowVisibility():
     if window.hidden:
         moveWindow(window)
@@ -56,5 +93,6 @@ keyboard.add_hotkey('ctrl+space', toggleWindowVisibility)
 
 
 webview.start(
-    # debug=True
+    evaluate_js, window
+    ,debug=True
     )
