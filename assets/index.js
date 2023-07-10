@@ -210,10 +210,6 @@ waitForElm('#cmenu').then(cmenu => {
     });
 });
 
-waitForElm('#recent').then(recentElement => {
-    load();
-});
-
 
 function save() {
     let recent = [...document.querySelectorAll('#recent img')].map(e => JSON.parse(e.dataset.jsonData));
@@ -231,7 +227,7 @@ function save() {
 
 function load() {
     let recentData = localStorage.getItem('recent');
-    console.log(recentData);
+    console.log("loading");
     if (recentData != null) {
         let recentElement = document.querySelector('#recent');
         let recent = JSON.parse(recentData);
@@ -265,3 +261,12 @@ function load() {
         });
     }
 }
+
+window.addEventListener('previousDataReady', function(data) {
+    console.log("loading", data);
+
+    localStorage.setItem('recent', data.detail.recent);
+    localStorage.setItem('fav', data.detail.fav);
+
+    load();
+});

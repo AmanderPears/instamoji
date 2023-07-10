@@ -25,8 +25,10 @@ def moveWindow(win):
 def evaluate_js(win):
     win.evaluate_js(
         f"""
-        localStorage.setItem('recent', {rdata});
-        localStorage.setItem('fav', {fdata});
+        console.log('setting');
+        //localStorage.setItem('recent', {rdata});
+        //localStorage.setItem('fav', {fdata});
+        window.dispatchEvent(new CustomEvent('previousDataReady', {{detail: {{recent : {rdata}, fav: {fdata}}}}}));
         """
     )
 
@@ -94,5 +96,5 @@ keyboard.add_hotkey('ctrl+space', toggleWindowVisibility)
 
 webview.start(
     evaluate_js, window
-    ,debug=True
+    # ,debug=True
     )
